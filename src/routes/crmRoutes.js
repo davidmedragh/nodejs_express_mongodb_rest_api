@@ -1,3 +1,12 @@
+import { runInNewContext } from "vm";
+import { 
+    addNewContact, 
+    getContacts,
+    getContactWithID,
+    deleteContact,
+    updateContact
+} from '../controllers/crmControllers';
+
 const routes = (app) => {
     app.route('/contact')
         .get((req, res, next) => {
@@ -5,19 +14,20 @@ const routes = (app) => {
             console.log(`Request de ${req.originalUrl}`)
             console.log(`request type: ${req.method}`)
             next();
-        }, (req, res, next) => {
-            res.send('demande GET avec succès');
-        })
+        }, getContacts)
 
-        .post((req,res) =>
-            res.send('demande POST avec succès'));
+
+        .post(addNewContact);
 
     app.route('/contact/:contactId')
-        .put((req,res) =>
-            res.send('demande PUT avec succès'))
-        
-        .delete((req,res) =>
-            res.send('demande DELETE avec succès'));
+        //contact avec ID
+        .get(getContactWithID)
+
+        //Mise a jour contact
+        .put(updateContact)
+
+        //supprimer contact
+        .delete(deleteContact);
 }
 
 export default routes;
